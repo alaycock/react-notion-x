@@ -525,6 +525,7 @@ export function PropertyImpl(props: IPropertyProps) {
       case 'select':
       // intentional fallthrough
       case 'multi_select': {
+        console.log('multi_select')
         const values = (data?.[0]?.[0] || '').split(',')
 
         content = values.map((value, index) => {

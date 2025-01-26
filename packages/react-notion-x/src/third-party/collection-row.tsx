@@ -5,6 +5,7 @@ import { useNotionContext } from '../context'
 import { cs } from '../utils'
 import { CollectionColumnTitle } from './collection-column-title'
 import { Property } from './property'
+import { PropertyContextProvider } from './propertyContext'
 
 export function CollectionRow({
   block,
@@ -59,23 +60,24 @@ export function CollectionRow({
           const schema = schemas[propertyId]
           if (!schema) return null
 
+          const propertyProps = {
+            schema,
+            data: block.properties?.[
+              propertyId as keyof typeof block.properties
+            ],
+            block,
+            collection,
+            propertyId
+          }
+
           return (
             <div className='notion-collection-row-property' key={propertyId}>
               <CollectionColumnTitle schema={schema} />
 
               <div className='notion-collection-row-value'>
-                <Property
-                  schema={schema}
-                  data={
-                    block.properties?.[
-                      propertyId as keyof typeof block.properties
-                    ]
-                  }
-                  propertyId={propertyId}
-                  block={block}
-                  collection={collection}
-                  pageHeader={pageHeader}
-                />
+                <PropertyContextProvider {...propertyProps}>
+                  <Property {...propertyProps} pageHeader={pageHeader} />
+                </PropertyContextProvider>
               </div>
             </div>
           )

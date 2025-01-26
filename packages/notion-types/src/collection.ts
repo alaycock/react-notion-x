@@ -20,6 +20,11 @@ export interface CollectionPropertySchema {
   options?: SelectOption[]
   number_format?: NumberFormat
   formula?: Formula
+  collection_pointer?: {
+    id: ID
+    spaceId: ID
+    table: string
+  }
 }
 
 export interface CollectionPropertySchemaMap {
@@ -37,8 +42,15 @@ export interface Collection {
   alive: boolean
   copied_from: string
   template_pages?: Array<ID>
-
   format?: {
+    collection_relation_options?: {
+      [propertyId: string]: {
+        related_properties: Array<{
+          property: PropertyID
+          visible: boolean
+        }>
+      }
+    }
     collection_page_properties?: Array<{
       property: PropertyID
       visible: boolean
